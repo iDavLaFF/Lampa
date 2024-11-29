@@ -3,6 +3,7 @@
 
     Lampa.Utils.putScriptAsync([
         'https://bylampa.github.io/tmdb-proxy.js',
+        'https://bylampa.github.io/account.js',
         'http://cub.red/plugin/tracks',
         'https://lampame.github.io/main/pubtorr/pubtorr.js',
         'https://lampame.github.io/main/nc/nc.js',
