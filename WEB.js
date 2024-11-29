@@ -14,9 +14,7 @@
 /* Combine 'interface' & 'cardify' plugins => 'beautify' ! 'cardify' without trailers, only cards beauty. 
         'https://idavlaff.github.io/lampa/plugins/interface.js',
         'https://idavlaff.github.io/lampa/plugins/cardify.js', */
-        'https://idavlaff.github.io/lampa/plugins/new4k.js',
-        'https://idavlaff.github.io/lampa/plugins/account.js',
-        'https://idavlaff.github.io/lampa/plugins/auth.js'
+        'https://idavlaff.github.io/lampa/plugins/new4k.js'
     ], function () { });
 
 })();
