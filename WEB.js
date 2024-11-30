@@ -2,7 +2,7 @@
     'use strict';
 
     Lampa.Utils.putScriptAsync([
-// @CUB thanks for all yout work
+// @CUB thanks for all of your work
         'http://cub.red/plugin/tmdb-proxy',
         'http://cub.red/plugin/tracks',
 // @LME thanks. Public parsers
