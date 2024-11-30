@@ -16,7 +16,7 @@
 // @LAMPAC thanks. !NB Timecode work only in torrents
         'https://idavlaff.github.io/lampa/plugins/timecode.js',
 // @CUB thanks, !'but pay for a big background, seriously?' Combine 'interface' & 'cardify' plugins => 'beautify' !NB 'cardify' without trailers, only cards beauty
-        'https://idavlaff.github.io/lampa/plugins/beautify.js',
+        'https://idavlaff.github.io/lampa/plugins/cardify.js',
 // Add new category "4K releases"
         'https://idavlaff.github.io/lampa/plugins/new4k.js'
     ], function () { });
