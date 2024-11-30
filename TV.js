@@ -6,8 +6,8 @@
         'http://cub.red/plugin/tracks',
         'https://lampame.github.io/main/pubtorr/pubtorr.js',
         'https://lampame.github.io/main/nc/nc.js',
- /* Off 'KPrating' ! don't work with 'cardify', need update.
-        'https://nb557.github.io/plugins/rating.js', */
+ // Off 'KPrating' ! don't work with 'cardify', need update.
+        'https://nb557.github.io/plugins/rating.js',
         'https://idavlaff.github.io/lampa/plugins/timecode.js',
         'https://idavlaff.github.io/lampa/plugins/beautify.js',
 /* Combine 'interface' & 'cardify' plugins => 'beautify' ! 'cardify' without trailers, only cards beauty. 
