@@ -13,8 +13,9 @@
         'https://lampame.github.io/main/its/its.js',
 // @NB557 thanks. 'KPrating.plugin' !NB Need update 'cause not work with 'cardify'
         'https://nb557.github.io/plugins/rating.js',
+// @LAMPAC thanks. !NB Timecode work only in torrents
         'https://idavlaff.github.io/lampa/plugins/timecode.js',
-// @CUB.RED thanks. Combine 'interface' & 'cardify' plugins => 'beautify' !NB 'cardify' without trailers, only cards beauty.
+// @CUB.RED thanks. Combine 'interface' & 'cardify' plugins => 'beautify' !NB 'cardify' without trailers, only cards beauty
         'https://idavlaff.github.io/lampa/plugins/beautify.js',
 // Add new category "4K releases"
         'https://idavlaff.github.io/lampa/plugins/new4k.js'
