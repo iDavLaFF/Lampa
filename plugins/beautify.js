@@ -298,9 +298,11 @@
       window.plugin_interface_ready = true;
       var old_interface = Lampa.InteractionMain;
       var new_interface = component;
+      var cardify = component;
 
       Lampa.InteractionMain = function (object) {
         var use = new_interface;
+        var use = cardify;
         if (!(object.source == 'tmdb' || object.source == 'cub')) use = old_interface;
         if (window.innerWidth < 767) use = old_interface;
         if (Lampa.Manifest.app_digital < 153) use = old_interface;
