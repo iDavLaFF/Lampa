@@ -19,7 +19,9 @@
         'https://idavlaff.github.io/lampa/plugins/beautify.js',
 // Add new category "4K releases"
         'https://idavlaff.github.io/lampa/plugins/new4k.js',
-        'https://idavlaff.github.io/lampa/plugins/off.js'
+        'https://idavlaff.github.io/lampa/plugins/off.js',
+        'https://idavlaff.github.io/lampa/plugins/auth.js',
+        'https://idavlaff.github.io/lampa/plugins/account.js'
     ], function () { });
 
 })();
