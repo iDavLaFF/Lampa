@@ -21,7 +21,7 @@
         'https://idavlaff.github.io/lampa/plugins/new4k.js',
 // @BWA thanks. Add 'Online.plugin'
 //        'https://bwa.to/idavlaff'
-        'https://idavlaff.github.io/lampa/plugins/online.js'
+        'https://nb557.github.io/plugins/online_mod.js'
     ], function () { });
 
 })();
