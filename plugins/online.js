@@ -2,11 +2,35 @@
   'use strict';
 
   var Defined = {
-    api: 'pwa',
-    localhost: 'http://192.168.0.153:9118/',
-    apn: 'https://apn.watch/'
+    api: 'lampac',
+    localhost: 'http://u421ivt.rc.bwa.to/',
+    apn: 'http://apn.cfhttp.top/'
   };
   
+  var rchtype = 'web';
+  var check = function check(good) {
+	rchtype = Lampa.Platform.is('android') ? 'apk' : good ? 'cors' : 'web';
+  }
+  
+  var unic_id = Lampa.Storage.get('lampac_unic_id', '');
+  if (!unic_id) {
+	unic_id = Lampa.Utils.uid(8).toLowerCase();
+	Lampa.Storage.set('lampac_unic_id', unic_id);
+  }
+  
+  if (Lampa.Platform.is('android') || Lampa.Platform.is('tizen')) check(true);
+  else 
+  {
+	var net = new Lampa.Reguest();
+	net.silent('https://github.com/', function() {
+	  check(true);
+	}, function() {
+	  check(false);
+	}, false, {
+	  dataType: 'text'
+	});
+  }
+
   function BlazorNet() {
     this.net = new Lampa.Reguest();
     this.timeout = function(time) {
@@ -15,13 +39,12 @@
     this.req = function(type, url, secuses, error, post) {
       var params = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
       var path = url.split(Defined.localhost).pop().split('?');
-	  console.log('BWA', path[0], path[1]);
       if (path[0].indexOf('http') >= 0) return this.net[type](url, secuses, error, post, params);
       DotNet.invokeMethodAsync("JinEnergy", path[0], path[1]).then(function(result) {
         if (params.dataType == 'text') secuses(result);
         else secuses(Lampa.Arrays.decodeJson(result, {}));
       })["catch"](function(e) {
-        console.log('BWA', e);
+        console.log('Blazor', 'error:', e);
         error(e);
       });
     };
@@ -37,7 +60,9 @@
       this.net.clear();
     };
   }
-  var Network = BlazorNet;
+  
+  var Network = Lampa.Reguest;
+  //var Network = Defined.api.indexOf('pwa') == 0 && typeof Blazor !== 'undefined' ? BlazorNet : Lampa.Reguest;
 
   function component(object) {
     var network = new Network();
@@ -74,9 +99,17 @@
 	
     function account(url) {
       url = url + '';
-      if (url.indexOf('account_email') == -1) {
-        var email = Lampa.Storage.get('account_email') || Lampa.Storage.get('lampac_unic_id', '');
+      if (url.indexOf('account_email=') == -1) {
+        var email = Lampa.Storage.get('account_email');
         if (email) url = Lampa.Utils.addUrlComponent(url, 'account_email=' + encodeURIComponent(email));
+      }
+      if (url.indexOf('uid=') == -1) {
+        var uid = Lampa.Storage.get('lampac_unic_id', '');
+        if (uid) url = Lampa.Utils.addUrlComponent(url, 'uid=' + encodeURIComponent(uid));
+      }
+      if (url.indexOf('token=') == -1) {
+        var token = '';
+        if (token != '') url = Lampa.Utils.addUrlComponent(url, 'token=');
       }
       return url;
     }
@@ -86,10 +119,39 @@
       var name = j.name.split(' ')[0];
       return (bals || name).toLowerCase();
     }
+	
+	function clarificationSearchAdd(value){
+		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title)
+		var all = Lampa.Storage.get('clarification_search','{}')
+		
+		all[id] = value
+		
+		Lampa.Storage.set('clarification_search',all)
+	}
+	
+	function clarificationSearchDelete(){
+		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title)
+		var all = Lampa.Storage.get('clarification_search','{}')
+		
+		delete all[id]
+		
+		Lampa.Storage.set('clarification_search',all)
+	}
+	
+	function clarificationSearchGet(){
+		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title)
+		var all = Lampa.Storage.get('clarification_search','{}')
+		
+		return all[id]
+	}
+	
     this.initialize = function() {
       var _this = this;
       this.loading(true);
       filter.onSearch = function(value) {
+		  
+		clarificationSearchAdd(value)
+		
         Lampa.Activity.replace({
           search: value,
           clarification: true
@@ -105,6 +167,8 @@
       filter.onSelect = function(type, a, b) {
         if (type == 'filter') {
           if (a.reset) {
+			  clarificationSearchDelete()
+			  
             _this.replaceChoice({
               season: 0,
               voice: 0,
@@ -113,7 +177,9 @@
             });
             setTimeout(function() {
               Lampa.Select.close();
-              Lampa.Activity.replace();
+              Lampa.Activity.replace({
+				  clarification: 0
+			  });
             }, 10);
           } else {
             var url = filter_find[a.stype][b.index].url;
@@ -156,7 +222,7 @@
         _this.noConnectToServer(e);
       });
     };
-    this.rch = function(json) {
+    this.rch = function(json, noreset) {
       var _this2 = this;
       var load = function load() {
         if (hubConnection) {
@@ -164,7 +230,7 @@
           hubConnection = null;
         }
         hubConnection = new signalR.HubConnectionBuilder().withUrl(json.ws).build();
-        hubConnection.on("RchClient", function(rchId, url, data) {
+        hubConnection.on("RchClient", function(rchId, url, data, headers) {
           var reff = $('head meta[name=\"referrer\"]').attr('content');
 
           function result(html) {
@@ -174,25 +240,24 @@
               id: rchId,
               value: html
             }, {
-              dataType: 'text'
+              dataType: 'text',
+              timeout: 1000 * 5
             });
           }
+		  
           $('head meta[name=\"referrer\"]').attr('content', 'origin');
-          var headers = url.indexOf("cdnmovies") >= 0 ? {
-            'Origin': 'https://cdnmovies.net',
-            'Referer': 'https://cdnmovies.net/'
-          } : {};
           network["native"](url, result, function() {
             result('');
           }, data, {
             dataType: 'text',
-            timeout: 1000 * 10,
+            timeout: 1000 * json.timeout,
             headers: headers
           });
         });
         hubConnection.start().then(function() {
           hubConnection.invoke("Registry", "rch").then(function() {
-            _this2.find();
+            if(!noreset) _this2.find();
+			else noreset()
           });
         })["catch"](function(err) {
           return console.error(err.toString());
@@ -202,7 +267,7 @@
         }, 1000 * json.keepalive);
       };
       if (typeof signalR == 'undefined') {
-        Lampa.Utils.putScript(["{localhost}/signalr-6.0.25_es5.js"], function() {}, false, function() {
+        Lampa.Utils.putScript(["http://u421ivt.rc.bwa.to/signalr-6.0.25_es5.js"], function() {}, false, function() {
           load();
         }, true);
       } else load();
@@ -254,6 +319,7 @@
       query.push('original_language=' + (object.movie.original_language || ''));
       query.push('year=' + ((object.movie.release_date || object.movie.first_air_date || '0000') + '').slice(0, 4));
       query.push('source=' + card_source);
+	  query.push('rchtype=' + rchtype);
       query.push('clarification=' + (object.clarification ? 1 : 0));
       if (Lampa.Storage.get('account_email', '')) query.push('cub_id=' + Lampa.Utils.hash(Lampa.Storage.get('account_email', '')));
       return url + (url.indexOf('?') >= 0 ? '&' : '?') + query.join('&');
@@ -296,7 +362,7 @@
     this.lifeSource = function() {
       var _this3 = this;
       return new Promise(function(resolve, reject) {
-        var url = _this3.requestParams(Defined.localhost + 'lifeevents');
+        var url = _this3.requestParams(Defined.localhost + 'lifeevents?memkey=' + (_this3.memkey || ''));
         var red = false;
         var gou = function gou(json, any) {
           if (json.accsdb) return reject(json);
@@ -370,6 +436,7 @@
         network.silent(account(url), function(json) {
           if (json.accsdb) return reject(json);
           if (json.life) {
+			_this4.memkey = json.memkey
             filter.render().find('.filter--sort').append('<span class="lampac-balanser-loader" style="width: 1.2em; height: 1.2em; margin-top: 0; background: url(./img/loader.svg) no-repeat 50% 50%; background-size: contain; margin-left: 0.5em"></span>');
             _this4.lifeSource().then(_this4.startSource).then(resolve)["catch"](reject);
           } else {
@@ -442,6 +509,8 @@
       }
     };
     this.getFileUrl = function(file, call) {
+	  var _this = this;
+	  
       if(Lampa.Storage.field('player') !== 'inner' && file.stream && Lampa.Platform.is('apple')){
 		  var newfile = Lampa.Arrays.clone(file)
 		  newfile.method = 'play'
@@ -456,8 +525,17 @@
           network.clear();
         });
         network["native"](account(file.url), function(json) {
-          Lampa.Loading.stop();
-          call(json, json);
+			if(json.rch){
+				_this.rch(json,function(){
+					Lampa.Loading.stop();
+					
+					_this.getFileUrl(file, call)
+				})
+			}
+			else{
+				Lampa.Loading.stop();
+				call(json, json);
+			}
         }, function() {
           Lampa.Loading.stop();
           call(false, {});
@@ -622,14 +700,14 @@
               //console.log('n',find_voice_name)
               //console.log('a',find_voice_active)
               if (find_voice_url && !find_voice_url.active) {
-                console.log('bwajs', 'go to voice', find_voice_url);
+                console.log('Lampac', 'go to voice', find_voice_url);
                 this.replaceChoice({
                   voice: buttons.indexOf(find_voice_url),
                   voice_name: find_voice_url.text
                 });
                 this.request(find_voice_url.url);
               } else if (find_voice_name && !find_voice_name.active) {
-                console.log('bwajs', 'go to voice', find_voice_name);
+                console.log('Lampac', 'go to voice', find_voice_name);
                 this.replaceChoice({
                   voice: buttons.indexOf(find_voice_name),
                   voice_name: find_voice_name.text
@@ -666,7 +744,7 @@
               var select_season = this.getChoice(balanser).season;
               var season = filter_find.season[select_season];
               if (!season) season = filter_find.season[0];
-              console.log('bwajs', 'go to season', season);
+              console.log('Lampac', 'go to season', season);
               this.request(season.url);
             }
           } else {
@@ -674,7 +752,7 @@
           }
         }
       } catch (e) {
-        console.log('bwajs', 'error', e.stack);
+        console.log('Lampac', 'error', e.stack);
         this.doesNotAnswer(e);
       }
     };
@@ -1250,7 +1328,7 @@
       });
       if(er && er.accsdb) html.find('.online-empty__title').text(er.msg)
 	  
-      var tic = er && er.accsdb ? 10 : 4;
+      var tic = er && er.accsdb ? 10 : 5;
       html.find('.cancel').on('hover:enter', function() {
         clearInterval(balanser_timer);
       });
@@ -1344,31 +1422,36 @@
   }
 
   function startPlugin() {
-    window.bwajs_plugin = true;
+    window.bwarch_plugin = true;
     var manifst = {
       type: 'video',
-      version: '1.3.0',
-      name: 'BwaJS',
-      description: 'Просмотра онлайн сериалов и фильмов',
-      component: 'bwajs',
+      version: '1.3.4',
+      name: 'BwaRC',
+      description: 'Плагин для просмотра онлайн сериалов и фильмов',
+      component: 'bwarch',
       onContextMenu: function onContextMenu(object) {
         return {
           name: Lampa.Lang.translate('lampac_watch'),
-          description: ''
+          description: 'Плагин для просмотра онлайн сериалов и фильмов'
         };
       },
       onContextLauch: function onContextLauch(object) {
         resetTemplates();
-        Lampa.Component.add('bwajs', component);
+        Lampa.Component.add('bwarch', component);
+		
+		var id = Lampa.Utils.hash(object.number_of_seasons ? object.original_name : object.original_title)
+		var all = Lampa.Storage.get('clarification_search','{}')
+		
         Lampa.Activity.push({
           url: '',
           title: Lampa.Lang.translate('title_online'),
-          component: 'bwajs',
-          search: object.title,
+          component: 'bwarch',
+          search: all[id] ? all[id] : object.title,
           search_one: object.title,
           search_two: object.original_title,
           movie: object,
-          page: 1
+          page: 1,
+		  clarification: all[id] ? true : false
         });
       }
     };
@@ -1483,7 +1566,7 @@
       Lampa.Template.add('lampac_prestige_watched', "<div class=\"online-prestige online-prestige-watched selector\">\n            <div class=\"online-prestige-watched__icon\">\n                <svg width=\"21\" height=\"21\" viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <circle cx=\"10.5\" cy=\"10.5\" r=\"9\" stroke=\"currentColor\" stroke-width=\"3\"/>\n                    <path d=\"M14.8477 10.5628L8.20312 14.399L8.20313 6.72656L14.8477 10.5628Z\" fill=\"currentColor\"/>\n                </svg>\n            </div>\n            <div class=\"online-prestige-watched__body\">\n                \n            </div>\n        </div>");
     }
     var button = "<div class=\"full-start__button selector view--online lampac--button\" data-subtitle=\"".concat(manifst.name, " v").concat(manifst.version, "\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 392.697 392.697\" xml:space=\"preserve\">\n            <path d=\"M21.837,83.419l36.496,16.678L227.72,19.886c1.229-0.592,2.002-1.846,1.98-3.209c-0.021-1.365-0.834-2.592-2.082-3.145\n                L197.766,0.3c-0.903-0.4-1.933-0.4-2.837,0L21.873,77.036c-1.259,0.559-2.073,1.803-2.081,3.18\n                C19.784,81.593,20.584,82.847,21.837,83.419z\" fill=\"currentColor\"></path>\n            <path d=\"M185.689,177.261l-64.988-30.01v91.617c0,0.856-0.44,1.655-1.167,2.114c-0.406,0.257-0.869,0.386-1.333,0.386\n                c-0.368,0-0.736-0.082-1.079-0.244l-68.874-32.625c-0.869-0.416-1.421-1.293-1.421-2.256v-92.229L6.804,95.5\n                c-1.083-0.496-2.344-0.406-3.347,0.238c-1.002,0.645-1.608,1.754-1.608,2.944v208.744c0,1.371,0.799,2.615,2.045,3.185\n                l178.886,81.768c0.464,0.211,0.96,0.315,1.455,0.315c0.661,0,1.318-0.188,1.892-0.555c1.002-0.645,1.608-1.754,1.608-2.945\n                V180.445C187.735,179.076,186.936,177.831,185.689,177.261z\" fill=\"currentColor\"></path>\n            <path d=\"M389.24,95.74c-1.002-0.644-2.264-0.732-3.347-0.238l-178.876,81.76c-1.246,0.57-2.045,1.814-2.045,3.185v208.751\n                c0,1.191,0.606,2.302,1.608,2.945c0.572,0.367,1.23,0.555,1.892,0.555c0.495,0,0.991-0.104,1.455-0.315l178.876-81.768\n                c1.246-0.568,2.045-1.813,2.045-3.185V98.685C390.849,97.494,390.242,96.384,389.24,95.74z\" fill=\"currentColor\"></path>\n            <path d=\"M372.915,80.216c-0.009-1.377-0.823-2.621-2.082-3.18l-60.182-26.681c-0.938-0.418-2.013-0.399-2.938,0.045\n                l-173.755,82.992l60.933,29.117c0.462,0.211,0.958,0.316,1.455,0.316s0.993-0.105,1.455-0.316l173.066-79.092\n                C372.122,82.847,372.923,81.593,372.915,80.216z\" fill=\"currentColor\"></path>\n        </svg>\n\n        <span>#{title_online}</span>\n    </div>"); // нужна заглушка, а то при страте лампы говорит пусто
-    Lampa.Component.add('bwajs', component); //то же самое
+    Lampa.Component.add('bwarch', component); //то же самое
     resetTemplates();
 
     function addButton(e) {
@@ -1491,16 +1574,21 @@
       var btn = $(Lampa.Lang.translate(button));
       btn.on('hover:enter', function() {
         resetTemplates();
-        Lampa.Component.add('bwajs', component);
+        Lampa.Component.add('bwarch', component);
+		
+		var id = Lampa.Utils.hash(e.movie.number_of_seasons ? e.movie.original_name : e.movie.original_title)
+		var all = Lampa.Storage.get('clarification_search','{}')
+		
         Lampa.Activity.push({
           url: '',
           title: Lampa.Lang.translate('title_online'),
-          component: 'bwajs',
-          search: e.movie.title,
+          component: 'bwarch',
+          search: all[id] ? all[id] : e.movie.title,
           search_one: e.movie.title,
           search_two: e.movie.original_title,
           movie: e.movie,
-          page: 1
+          page: 1,
+		  clarification: all[id] ? true : false
         });
       });
       e.render.after(btn);
@@ -1529,6 +1617,6 @@
       Lampa.Storage.sync('online_watched_last', 'object_object');
     }
   }
-  if (!window.bwajs_plugin) startPlugin();
+  if (!window.bwarch_plugin) startPlugin();
 
 })();
