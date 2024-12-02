@@ -20,7 +20,8 @@
 // Add new category "4K releases"
         'https://idavlaff.github.io/lampa/plugins/new4k.js',
 // @BWA thanks. Add 'Online.plugin'
-        'https://bwa.to/idavlaff'
+//        'https://bwa.to/idavlaff'
+        'https://idavlaff.github.io/lampa/plugins/online.js'
     ], function () { });
 
 })();
