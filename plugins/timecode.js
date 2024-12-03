@@ -1,6 +1,12 @@
 (function() {
   'use strict';
 
+  var unic_id = Lampa.Storage.get('lampac_unic_id', '');
+  if (!unic_id) {
+    unic_id = Lampa.Utils.uid(8).toLowerCase();
+    Lampa.Storage.set('lampac_unic_id', unic_id);
+  }
+  
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -52,15 +58,21 @@
         };
         var card_id = (card.id || 0) + '_' + (card.name ? 'tv' : 'movie');
         var uid = Lampa.Storage.get('lampac_unic_id', '');
-		
-        if (account.email){
-          url = Lampa.Utils.addUrlComponent(url, 'account_email=' + encodeURIComponent(account.email));
+        var token = '{token}';
+    
+        if (token != ''){
+          if (url.indexOf('token=') == -1) url = Lampa.Utils.addUrlComponent(url, 'token=' + token);
+          if (account.profile) url = Lampa.Utils.addUrlComponent(url, 'profile=' + token);
+        }
+    else if (account.email){
+          if (url.indexOf('account_email=') == -1) url = Lampa.Utils.addUrlComponent(url, 'account_email=' + encodeURIComponent(account.email));
           if (account.profile) url = Lampa.Utils.addUrlComponent(url, 'profile=' + encodeURIComponent(account.profile.id));
         }
         else if (uid){
-          url = Lampa.Utils.addUrlComponent(url, 'account_email=' + encodeURIComponent(uid));
+          if (url.indexOf('uid=') == -1) url = Lampa.Utils.addUrlComponent(url, 'uid=' + encodeURIComponent(uid));
           url = Lampa.Utils.addUrlComponent(url, 'profile=' + encodeURIComponent(uid));
         }
+    
         url = Lampa.Utils.addUrlComponent(url, 'card_id=' + encodeURIComponent(card_id));
         return url;
       }
