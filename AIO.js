@@ -15,6 +15,8 @@
         'https://nb557.github.io/plugins/rating.js',
 // @LAMPAC thanks. !NB Timecode work only in torrents
         'https://idavlaff.github.io/lampa/plugins/timecode.js',
+// @SKAZTV thanks. Import/Export 'favorites'
+        'https://skaz.tv/export.js',
 // @CUB thanks, !'but pay for a big background, seriously?' Combine 'interface' & 'cardify' plugins => 'beautify' !NB 'cardify' without trailers, only cards beauty
         'https://idavlaff.github.io/lampa/plugins/beautify.js',
 // Add new category "4K releases"
