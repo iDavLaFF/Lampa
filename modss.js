@@ -19,8 +19,8 @@
         menu_list = [],
         vip = true,
         leftVipD = '',
-        user_id = 502687708,
-        uid = '2ac8c2b6ae08341f48682c68b_502687708',
+        user_id = 502782748,
+        uid = '0dcd9a7c5475f07aef4280c8_502782748',
         IP,
         logged = true,
         cashe = encodeURIComponent(Lampa.Base64.encode(window.location.origin));
@@ -39,10 +39,10 @@
     }, {
         user_id: user_id,
         uid: uid,
-        ips: '185.77.216.3',
+        ips: '183.76.216.8',
         cas: cashe,
         cache: false,
-        id: 'aWRhdmxhZmZAbWFpbC5ydQ==',
+        id: 'bW9kc3NAb3V0bG9vay5jb20=',
         or: 'Y2YubGFtcGEubXg=',
         auth: logged
     }, {
