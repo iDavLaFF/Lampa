@@ -8,7 +8,7 @@
        return window.location.protocol == 'https:' ? 'https://' : 'http://';
      }
      var TRASH_R = ['$$$####!!!!!!!', '^^^^^^##@', '@!^^!@#@@$$$$$', '^^#@@!!@#!$', '@#!@@@##$$@@'];
-     var version_modss = '3.1', API = Protocol() + 'api.lampa.stream/', type = '', jackets = {}, cards, ping_auth, manifest, menu_list = [], vip = false, leftVipD = '', user_id = '', uid = '2ac8c2b6ae08341f48682c68b', IP, logged = false, cashe = encodeURIComponent(Lampa.Base64.encode(window.location.origin));
+     var version_modss = '3.1', API = Protocol() + 'api.lampa.stream/', type = '', jackets = {}, cards, ping_auth, manifest, menu_list = [], vip = true, leftVipD = '', user_id = '', uid = '2ac8c2b6ae08341f48682c68b', IP, logged = false, cashe = encodeURIComponent(Lampa.Base64.encode(window.location.origin));
      console.log('Modss', 'init', 'loaded');
      console.log('App', 'origin', window.location.origin);
  
@@ -22,7 +22,7 @@
       }, function(a, c) {
         Lampa.Noty.show('MODSs ОШИБКА   ' + network.errorDecode(a, c));
       }, {
-        user_id: user_id, 
+        user_id: user_id,
         uid: uid,
         ips: '185.77.216.3',
         cas: cashe,
