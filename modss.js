@@ -7,30 +7,45 @@
      var Protocol = function Protocol() {
        return window.location.protocol == 'https:' ? 'https://' : 'http://';
      }
-     var TRASH_R = ['$$$####!!!!!!!', '^^^^^^##@', '@!^^!@#@@$$$$$', '^^#@@!!@#!$', '@#!@@@##$$@@'];
-     var version_modss = '3.1', API = Protocol() + 'api.lampa.stream/', type = '', jackets = {}, cards, ping_auth, manifest, menu_list = [], vip = true, leftVipD = '', user_id = '', uid = '2ac8c2b6ae08341f48682c68b', IP, logged = false, cashe = encodeURIComponent(Lampa.Base64.encode(window.location.origin));
-     console.log('Modss', 'init', 'loaded');
-     console.log('App', 'origin', window.location.origin);
- 
-     var network = new Lampa.Reguest();
-      network.silent(API.replace('api.','') + 'modss', function(json) {
+
+    var TRASH_R = ['$$$####!!!!!!!', '^^^^^^##@', '@!^^!@#@@$$$$$', '^^#@@!!@#!$', '@#!@@@##$$@@'];
+    var version_modss = '3.1',
+        API = Protocol() + 'api.lampa.stream/',
+        type = '',
+        jackets = {},
+        cards,
+        ping_auth,
+        manifest,
+        menu_list = [],
+        vip = true,
+        leftVipD = '',
+        user_id = 502687708,
+        uid = '2ac8c2b6ae08341f48682c68b_502687708',
+        IP,
+        logged = true,
+        cashe = encodeURIComponent(Lampa.Base64.encode(window.location.origin));
+    console.log('Modss', 'init', 'loaded');
+    console.log('App', 'origin', window.location.origin);
+
+    var network = new Lampa.Reguest();
+    network.silent(API.replace('api.', '') + 'modss', function(json) {
         try {
-          eval(json);
+            eval(json);
         } catch (error) {
-          console.error('Ошибка выполнения кода:', error);
+            console.error('Ошибка выполнения кода:', error);
         }
-      }, function(a, c) {
+    }, function(a, c) {
         Lampa.Noty.show('MODSs ОШИБКА   ' + network.errorDecode(a, c));
-      }, {
+    }, {
         user_id: user_id,
         uid: uid,
         ips: '185.77.216.3',
         cas: cashe,
         cache: false,
-        id: '',
-        or: 'dW5kZWZpbmVk',
+        id: 'aWRhdmxhZmZAbWFpbC5ydQ==',
+        or: 'Y2YubGFtcGEubXg=',
         auth: logged
-      }, {
+    }, {
         dataType: 'text'
-      });
-   })();
+    });
+})();
