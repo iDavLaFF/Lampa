@@ -23,30 +23,5 @@
 // @BWA thanks. Add 'Online.plugin'
         'https://bwa.to/idavlaff'
     ], function () { });
-    
-    var timer = setInterval(function(){
-        if(typeof Lampa !== 'undefined'){
-            clearInterval(timer);
-
-            if(!Lampa.Storage.get('set','false')) start_set();
-		 
-        }
-    },200);
-
-    function start_set() {
-        Lampa.Storage.set('set','true');
-        Lampa.Storage.set('keyboard_type', 'integrate');
-        Lampa.Storage.set('start_page', 'main');
-        Lampa.Storage.set('source', 'cub');
-        Lampa.Storage.set('background', 'false');
-        Lampa.Storage.set('animation', 'true');
-        Lampa.Storage.set('mask', 'false');
-        Lampa.Storage.set('player_normalization', 'false');
-        Lampa.Storage.set('player_timecode', 'ask');
-        Lampa.Storage.set('screensaver', 'true');
-        Lampa.Storage.set('pages_save_total', '3');
-        Lampa.Storage.set('device_name', 'ATV');
-        location.reload()
-    }
 
 })();
