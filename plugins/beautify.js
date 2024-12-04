@@ -1,5 +1,7 @@
 (function () {
     'use strict';
+    
+    Lampa.Platform.tv();
 
     function create() {
       var html;
