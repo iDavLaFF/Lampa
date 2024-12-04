@@ -314,7 +314,6 @@
       $("body").append(Lampa.Template.get("cardify_css", {}, true));
     }
 
-    if (!Lampa.Platform.screen('tv')) startPlugin();
     if (!window.plugin_interface_ready) startPlugin();
 
 })();
