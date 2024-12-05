@@ -19,7 +19,7 @@
         'https://idavlaff.github.io/lampa/plugins/beautify.js?v=' + Math.random(),
 // Add new category "4K releases"
         'https://idavlaff.github.io/lampa/plugins/new4k.js?v=' + Math.random(),
-//        'https://idavlaff.github.io/lampa/plugins/book.js?v=' + Math.random(),
+        'https://idavlaff.github.io/lampa/plugins/book.js?v=' + Math.random(),
 // @BWA thanks. Add 'Online.plugin'
         'https://bwa.to/idavlaff'
     ], function () { });
