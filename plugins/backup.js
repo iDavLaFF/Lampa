@@ -164,7 +164,7 @@
       ],
       onSelect: (a, b) => {
         if (a.import) {
-          network.silent(account('{localhost}/backup/import'), (data) => {
+          network.silent(account('https://drive.google.com/drive/folders/1ebv2vFDF3tgbB8G98JufT-4j0KaitYXK?usp=share_link/backup/import'), (data) => {
             if (data.data) {
               var keys = Lampa.Arrays.getKeys(data.data)
               for (var i in data.data) {
