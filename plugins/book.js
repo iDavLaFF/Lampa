@@ -13,8 +13,6 @@
         }
     };
 
-    var initMarker = 0;
-
     function cub_off() {
 
         Lampa.Settings.listener.follow('open', function (e) {
@@ -31,9 +29,8 @@
         Lampa.Listener.follow('app', function (e) {
             if (e.type == 'ready') {
                 cub_off();
-
             }
         });
     }
-
+    }
 })();
