@@ -35,7 +35,7 @@
   var Timecode = /*#__PURE__*/ function() {
     function Timecode(field) {
       _classCallCheck(this, Timecode);
-      this.localhost = 'http://bruypjtt.deploy.cx/';
+      this.localhost = 'https://bfdnondq.deploy.cx/';
       this.network = new Lampa.Reguest();
     }
     _createClass(Timecode, [{
