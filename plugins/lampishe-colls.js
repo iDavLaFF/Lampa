@@ -83,7 +83,7 @@
       component: 'lampishe_collections'
     };
     Lampa.Manifest.plugins = manifest;
-    Lampa.Component.add('lampishe_collections', component$1);
+    Lampa.Component.add('lampishe_collection', component$1);
     Lampa.Component.add('lampishe_collections', component);
 
     function addMenuItem() {
@@ -105,13 +105,6 @@
           page: 1
         });
       });
-
-      // Найти указанный элемент в меню
-      var targetElement = $('.menu .menu__list').find('.menu__item[data-action="lampishe_collections"]');
-      
-      // Вставить кнопку после указанного элемента
-      button.insertAfter(targetElement);  
-    }
 
     if (!window.lampishe_collections_ready) {
       window.lampishe_collections_ready = true;
