@@ -107,7 +107,7 @@
       });
 
       // Найти указанный элемент в меню
-      var targetElement = $('.menu .menu__list').find('.menu__item[data-action="lampishe_collections"]');
+      var targetElement = $('.menu .menu__list').find('.menu__item[data-action="hd"]');
       
       // Вставить кнопку после указанного элемента
       button.insertAfter(targetElement);  
