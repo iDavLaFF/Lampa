@@ -8,11 +8,11 @@
     
     button.on("hover:enter", function () {
       Lampa.Activity.push({
-        url: "http://api.vokino.tv/v2/list?sort=popular&type=tvshow",
-        title: "Лучшее",
-        source: "tmdb",
+        url: "http://api.vokino.tv/v2/list?sort=rating&type=tvshow",
+        title: "ТВ Шоу",
+        source: "cub",
         sort: "rating",
-        card_type: "tvshow",
+        card_type: "true",
         page: 1
       });
     });
