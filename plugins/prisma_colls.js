@@ -106,7 +106,7 @@
         });
       });
 
-      $('.menu .menu__list');
+      $('.menu .menu__list').eq(0).append(button);
     }
 
     if (!window.prisma_colls_ready) {
