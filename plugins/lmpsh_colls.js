@@ -2,7 +2,7 @@
     'use strict';
 
     var network = new Lampa.Reguest();
-    var api_url = Lampa.Utils.protocol() + 'api.lampishe.cc/collections/;
+    var api_url = Lampa.Utils.protocol() + 'api.lampishe.cc/collections/';
     function main(params, oncomplite, onerror) {
       network.silent(api_url + 'list?page=' + params.page, function (data) {
         data.collection = true;
