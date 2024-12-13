@@ -2,7 +2,7 @@
   'use strict';
 
   var network = new Lampa.Reguest();
-  var api_url = 'https://api.lampishe.cc/collections/prisma/';
+  var api_url = Lampa.Utils.protocol() + 'https://api.lampishe.cc/collections/prisma/';
 
   function main(params, oncomplete, onerror) {
     network.silent(api_url + '?page=' + params.page, function (data) {
@@ -106,7 +106,7 @@
         });
       });
 
-      $('.menu .menu__list').find('.menu__item[data-action="lampishe_collections"]');
+      $('.menu .menu__list');
     }
 
     if (!window.prisma_colls_ready) {
